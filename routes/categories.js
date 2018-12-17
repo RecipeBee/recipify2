@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var mongo = require('mongodb');
-var db = require('monk')('mongodb://alfred:password00@ds249233.mlab.com:49233/msin636');
+var config = require('.././config.js');
+var db = require('monk')(databaseString); //monk ODM, instead of mongoose
 
 router.get('/add',auth, function(req, res, next) {
   var categories = db.get('categories');
@@ -48,7 +49,7 @@ var title = req.body.title;
   });
 
 
-  function auth(req,res, next){ // before you try to show user the homepage, check the auth middleware function, if the request .isAuthenticated() property is true, then skip to callback and render index.js  
+  function auth(req,res, next){ // before you try to show user the homepage, check the auth middleware function, if the request .isAuthenticated() property is true, then skip to callback and render index.js
     if(req.isAuthenticated()){
       return next();
     }

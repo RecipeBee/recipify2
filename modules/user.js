@@ -5,7 +5,8 @@ var mongoose = require('mongoose'); // require mongoose ORM
 var bcrypt = require('bcrypt-nodejs'); // for password encryption
 
 // mongoose.connect('mongodb://alfred:password00@ds249233.mlab.com:49233/msin636',{useNewUrlParser:true});
-mongoose.connect('mongodb://olegsaidov:abc123@ds155313.mlab.com:55313/olegdb', {useNewUrlParser: true}); // for database connection
+var config = require('.././config.js');
+mongoose.connect(databaseString, {useNewUrlParser: true}); // for database connection
 
 var UserSchema = mongoose.Schema({ // create a user schema, create user table alternative for sql
   username:{type: String},
@@ -42,7 +43,7 @@ module.exports.createUser = function(newUser, callback){                      //
     });
 
 
-   
+
 
 };
 
@@ -50,10 +51,10 @@ module.exports.createUser = function(newUser, callback){                      //
 module.exports.checkEmail= function(email, callback){
   var query = {email:email};
   User.findOne(query,callback);
-}; 
- 
+};
+
 module.exports.forgotPasswordUpdate = function(email, callback){
-var query ={email:email};  
+var query ={email:email};
 User.findOneAndUpdate(query, {forgotpassword: true}, callback);
 
 }
@@ -63,7 +64,7 @@ module.exports.passwordLinkId = function(email, callback){
   User.findOne(query, '_id', callback);
 }
 
-module.exports.checkId=function(id,callback){ 
+module.exports.checkId=function(id,callback){
   User.findById(id,callback);
 }
 

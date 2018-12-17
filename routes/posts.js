@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var mongo = require('mongodb');
-var db = require('monk')('mongodb://alfred:password00@ds249233.mlab.com:49233/msin636');
+var config = require('.././config.js');
+var db = require('monk')(databaseString); //monk ODM, instead of mongoose
 var multer=require('multer');
 var upload = multer({ dest: 'public/images/uploads/' })
 
@@ -17,16 +18,16 @@ router.get('/show/:id', function(req, res, next) {  //shows posts in a single pa
 router.get('/add',auth, function(req, res, next) {     //adds a posts to site /posts/add
   var categories = db.get('categories');
 
-  categories.find({},{}, function(err,categories){ //fetches the categories collection 
+  categories.find({},{}, function(err,categories){ //fetches the categories collection
       res.render('addpost', { title: 'Add Recipe', categories: categories});
   })
 });
-//Edit post get method                                   
+//Edit post get method
 router.get('/edit/:id',auth, function(req, res, next) {  // edit post /posts/edit/:id
                      //fetches categories
   var posts = db.get('posts');
   var categories = db.get('categories');
-  posts.findOne({_id: req.params.id},function(err,post){  
+  posts.findOne({_id: req.params.id},function(err,post){
     if(err)throw error;
     categories.find({},{}, function(err,cats){
       if(err)throw error;
@@ -35,7 +36,7 @@ router.get('/edit/:id',auth, function(req, res, next) {  // edit post /posts/edi
       console.log("HERE IS THE POST: " + post._id + " " + post.title + " " + post.body  + " " + post.category  +" " + post.author  +" " +post.date )
   });// find categories
   }); //find posts
- 
+
 }); //router.get for posts/edit/:id
 
 router.post('/edit/:id',upload.single('mainimage'), function(req,res,next){ // post metho for /posts/edit
@@ -190,7 +191,7 @@ router.post('/addcomment', function(req,res,next){
       }
 });
 
-function auth(req,res, next){ // before you try to show user the homepage, check the auth middleware function, if the request .isAuthenticated() property is true, then skip to callback and render index.js  
+function auth(req,res, next){ // before you try to show user the homepage, check the auth middleware function, if the request .isAuthenticated() property is true, then skip to callback and render index.js
   if(req.isAuthenticated()){
     return next();
   }
