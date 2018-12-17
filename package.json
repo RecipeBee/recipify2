@@ -1,0 +1,30 @@
+{
+  "name": "blog",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "connect-flash": "*",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.16.0",
+    "express-messages": "*",
+    "express-session": "*",
+    "express-validator": "*",
+    "http-errors": "~1.6.2",
+    "jade": "~1.11.0",
+    "moment": "^2.22.2",
+    "mongodb": "*",
+    "mongoose": "^5.4.0",
+    "monk": "*",
+    "morgan": "~1.9.0",
+    "multer": "*",
+    "nodemailer": "^4.7.0",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "pug": "^2.0.3"
+  }
+}

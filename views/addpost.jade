@@ -1,0 +1,40 @@
+extends layout
+
+block content
+  if errors
+    ul.errors
+      each error, i in errors
+        li.alert.alert-danger #{error.msg}
+  .row
+    .col-md-1
+    .col-md-10
+      .panel.panel-primary
+        .panel-heading
+          h1.text-center=title
+        .panel-body
+          form(method="POST", action="/posts/add", enctype="multipart/form-data")
+            .formgroup
+              label Title:
+              input.form-control(name='title', type="text")
+            .formgroup
+              label category:
+              select.form-control(name='category')
+                each category, i in categories
+                  option(value= category.title) #{category.title}
+            .formgroup
+              label Body:
+              textarea.form-control(name='body', id='body' )
+            .formgroup
+              label Feature Image:
+              input.form-control(name='mainimage', type='file')
+            .formgroup
+              label Author:
+              select.form-control(name='author')
+                option(value="Alfred Rezk") Alfred Rezk
+                option(value="Admin") Admin
+            br
+            p.text-center
+              input.btn.btn-primary(name="submit", type="submit", value="save")
+
+          script.
+            CKEDITOR.replace('body');

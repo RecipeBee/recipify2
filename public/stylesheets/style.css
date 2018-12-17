@@ -1,0 +1,97 @@
+
+
+/*Styles for the video header*/
+
+header {
+  position: relative;
+  background-color: black;
+  height: 75vh;
+  min-height: 25rem;
+  width: 100%;
+  overflow: hidden;
+}
+
+header video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: 0;
+  -ms-transform: translateX(-50%) translateY(-50%);
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+}
+
+header .container {
+  position: relative;
+  z-index: 2;
+}
+
+
+
+@media (pointer: coarse) and (hover: none) {
+  header {
+    background: url('https://source.unsplash.com/XT5OInaElMw/1600x900') black no-repeat center center scroll;
+  }
+  header video {
+    display: none;
+  }
+}
+/*End of tyles for the video header*/
+
+ul.success li{
+  padding:15px;
+  margin-bottom:20px;
+  boarder:1px solid transparent;
+  boarder-radius:4px;
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color:#d6e9c6;
+  list-style: none;
+}
+ul.errors li{
+  padding:15px;
+  margin-bottom:20px;
+  boarder:1px solid transparent;
+  boarder-radius:4px;
+  color: #a94442;
+  background-color: #f2dede;
+  border-color:#ebccd1;
+  list-style: none;
+}
+
+img.post{width:100%;}
+
+.post_header{
+  display: inline;
+}
+
+.post_link, .post_link:hover{
+  color:black;
+  text-decoration: none;
+   font-weight: 600;
+}
+.post_link:hover{
+  color: Blue;
+}
+
+.panel-heading{padding:15px;
+padding-bottom: 20px;}
+
+.post-panel{
+   box-shadow: 10px 10px 10px -7px #777;
+}
+
+.comment_input{
+  display:inline;
+}
+
+.mybtn {
+  width:80px;
+  margin-right:10px;
+}
+

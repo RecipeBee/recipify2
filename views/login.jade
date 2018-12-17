@@ -1,0 +1,25 @@
+extends layout
+
+block content
+  .row
+    .col-md-4
+    .col-lg-4#login
+      .text-center
+        h2.text-center.page-header(style='margin:2px;padding:5px;') Login
+      p.text-center Please Login below
+      form(method="post" action="/users/login")
+        input.form-control(name='username', type='text', placeholder='Username', autofocus='')
+        .form-group
+        input.form-control(name='password', type='password', placeholder='Password')
+        .form-group
+        input.btn-block.btn.btn-primary(name='submit', type='submit', value='Login')
+        br
+        // STEP ONE and SEVEN OF THE INSTRUCTION
+        p.text-center
+          a(href='/users/forgot') Forgot your password or username?
+        br
+        br
+    .col-md-4
+        if success
+          .alert.alert-success
+            strong Success, #{success}

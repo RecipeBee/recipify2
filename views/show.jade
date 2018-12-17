@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  .container
+    .row
+      .col-lg-2
+      .col-lg-8      
+        if errors
+          ul.errors
+            each error, i in errors
+              li.alert.alert-danger #{error.msg}
+        .panel.panel-primary
+          .panel-heading.text-center
+            p.text-right
+              a.pull-right.btn.btn-warning.btn-sm.mybtn(href = '/posts/delete/#{post._id}')  DELETE
+              a.pull-right.btn.btn-primary.btn-sm.mybtn(href = '/posts/edit/#{post._id}')  EDIT
+            h3.display-4
+                !=post.title  
+            img.post.img-thumbnail(src='/images/uploads/#{post.mainimage}')
+                      
+          .panel-body
+            !=post.body
+            br
+            hr
+
+        

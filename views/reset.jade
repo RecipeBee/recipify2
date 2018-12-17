@@ -1,0 +1,28 @@
+extends layout
+
+block content
+  .row
+    .col-md-4
+    .col-lg-4#login
+      .text-center
+        h2.text-center.page-header(style='margin:2px;padding:5px;') Reset Password
+      
+      form(method="post" action="")
+        input.form-control(name='newpassword1', type='password', placeholder='New Password', autofocus='')
+        .form-group
+        input.form-control(name='newpassword2', type='password', placeholder='Re-type New Password')
+        .form-group
+        input.btn-block.btn.btn-primary(name='submit', type='submit', value='Update')
+        br
+        br
+        br
+    .col-md-4
+        if errors 
+          br
+          br
+          br
+          br
+          each error, i in errors
+            div.alert.alert-danger.alert-dismissible.show
+              strong Error! #{error.msg}
+              a.close.customclose(href='#', data-dismiss='alert') &times;

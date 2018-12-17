@@ -1,0 +1,37 @@
+extends layout
+
+block content
+  .container
+    .row
+      .col-md-4
+      .col-md-4
+        h2.text-center.page-header Register
+          form(method="post" action="/users/signup", enctype="multipart/form-data")
+            .form-group
+            input.form-control(name='name', type='text', placeholder='Full Name')
+            .form-group
+            input.form-control(name='email', type='text', placeholder='Email')
+            .form-group
+            input.form-control(name='username', type='text', placeholder='Username')
+            .form-group
+            input.form-control(name='password', type='password', placeholder='Password')
+            .form-group
+            input.form-control(name='password2', type='password', placeholder='Confirm Password')
+            .form-group
+            p.small Profile Image
+            .form-group
+            input.form-control(name='avatar', type='file')
+            .form-group
+            input.btn.btn-block.btn-primary(name='submit', type='submit', value='registers')
+            br
+
+      .col-md-4
+        if errors 
+          br
+          br
+          br
+          br
+          each error, i in errors
+            div.alert.alert-danger.alert-dismissible.show
+              strong Error! #{error.msg}
+              a.close.customclose(href='#', data-dismiss='alert') &times;

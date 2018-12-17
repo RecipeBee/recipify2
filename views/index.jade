@@ -1,0 +1,44 @@
+extends layout
+
+block content
+  header.border-bottom.border-warning.border-4
+    .overlay
+    video(playsinline='playsinline', autoplay='autoplay', muted='muted', loop='loop')
+      source(src='/videos/food_pexels.mp4', type='video/mp4')
+      |     Your browser does not support the video tag.
+    .container.h-100
+      .d-flex.text-center.h-100
+        .my-auto.w-100.text-white
+          h1.display-1 Recipify
+          h1.display-4 The Home of All Recepies
+  section.my-5
+    .container
+      .row
+        if posts
+          each post, i in posts
+            .col-lg-4.mb-4         
+              .card.border-0
+                h4.card-header.bg-warning.text-white
+                  a.post_link.text-white(href='/posts/show/#{post._id}')
+                    !=post.title
+                .card-body
+                  img.post.img-thumbnail(src='/images/uploads/#{post.mainimage}')
+                  p.card-text 
+                    !=truncateText(post.body,300)
+                  p.text-center
+                  a.btn.btn-primary.btn-sm(href="/posts/show/#{post._id}") Read more 
+                    
+                .card-footer
+                  p.text-center 
+                    |Posted in 
+                    a(href="/categories/show/#{post.category}").btn-warning.btn-sm.text-white #{post.category}
+                    |&nbsp;  by #{post.author} on #{moment(post.date).format("MM-DD-YYYY")} 
+
+      if(posts=="")
+        .panel.panel-default.post-panel
+          .panel-heading.text-center
+              h1 No recepies yet
+          .panel-body
+              p.text-center Thank you for visiting recipify.com
+    
+                  
