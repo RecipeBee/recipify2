@@ -54,6 +54,7 @@ app.use(flash());
 app.use(require('connect-flash')());
 app.use(function (req, res, next) {
   res.locals.messages = require('express-messages')(req, res);
+  res.locals.user = req.user || null;
   next();
 });
 

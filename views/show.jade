@@ -12,8 +12,9 @@ block content
         .panel.panel-primary
           .panel-heading.text-center
             p.text-right
-              a.pull-right.btn.btn-warning.btn-sm.mybtn(href = '/posts/delete/#{post._id}')  DELETE
-              a.pull-right.btn.btn-primary.btn-sm.mybtn(href = '/posts/edit/#{post._id}')  EDIT
+              if user
+                a.pull-right.btn.btn-warning.btn-sm.mybtn(href = '/posts/delete/#{post._id}')  DELETE
+                a.pull-right.btn.btn-primary.btn-sm.mybtn(href = '/posts/edit/#{post._id}')  EDIT
             h3.display-4
                 !=post.title  
             img.post.img-thumbnail(src='/images/uploads/#{post.mainimage}')
