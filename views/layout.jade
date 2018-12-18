@@ -21,17 +21,12 @@ html
               a.nav-link.text-white(href='/posts/add') Add Recipe
             li.nav-item
               a.nav-link.text-white(href='/categories/add') Add Category
-            if user
-              li(class=(title =='Member' ? 'active' : ''))
-                a(href="/") User Area
-            if !user
-              li.nav-item
-                a.nav-link.text-white(href="/users/signup") Sign Up
-              li.nav-item
-                a.nav-link.text-white(href="/users/login") Login
-            else            
-              li.nav-item
-                a.nav-link.text-white(href="/users/logout") Logout
+            li.nav-item
+              a.nav-link.text-white(href="/users/signup") Sign Up
+            li.nav-item
+              a.nav-link.text-white(href="/users/login") Login
+            li.nav-item
+              a.nav-link.text-white(href="/users/logout") Logout
 
     - var msg = messages();
     if(msg)
