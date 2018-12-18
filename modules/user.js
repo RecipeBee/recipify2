@@ -1,10 +1,6 @@
-
-//This is a local module file that will be exported to other parts of the program
-
 var mongoose = require('mongoose'); // require mongoose ORM
 var bcrypt = require('bcrypt-nodejs'); // for password encryption
 
-// mongoose.connect('mongodb://alfred:password00@ds249233.mlab.com:49233/msin636',{useNewUrlParser:true});
 var config = require('.././config.js');
 mongoose.connect(databaseString, {useNewUrlParser: true}); // for database connection
 
@@ -17,9 +13,9 @@ var UserSchema = mongoose.Schema({ // create a user schema, create user table al
   forgotpassword:{type: Boolean}  //STEP 2 OF THE INSTRUCTION
   });
 
-var User = module.exports = mongoose.model('User', UserSchema) // createing a user model from UserSchema
+var User = module.exports = mongoose.model('User', UserSchema) // creating a user model from UserSchema
 
-module.exports.getUserById=function(id,callback){ // custom property for module.exports to retriev a user by his id
+module.exports.getUserById = function(id,callback){ // custom property for module.exports to retriev a user by his id
   User.findById(id,callback);
 }
 
@@ -28,23 +24,17 @@ module.exports.getUserByUsername = function(username,callback){ // custom proper
   User.findOne(query, callback);
 }
 
-module.exports.comparePassword = function(canidatePassword, hash, callback){ // custom property for module.exports to compare hashed passwords
-  bcrypt.compare(canidatePassword, hash, function(err, res) {
+module.exports.comparePassword = function(candidatePassword, hash, callback){ // custom property for module.exports to compare hashed passwords
+  bcrypt.compare(candidatePassword, hash, function(err, res) {
       callback(null,res);
   });
-
 };
 
-
-module.exports.createUser = function(newUser, callback){                      //custom property for module.exports to create a new user
+module.exports.createUser = function(newUser, callback){    //custom property for module.exports to create a new user
     bcrypt.hash(newUser.password, null, null, function(err, hash) {
         newUser.password = hash;
         newUser.save(callback);
     });
-
-
-
-
 };
 
 // More functions for lost password

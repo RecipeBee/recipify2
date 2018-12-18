@@ -9,6 +9,7 @@ var session = require('express-session'); // express-session may be needed to wo
 var passport = require('passport'); // require passport for authentication 
 var LocalStrategy = require('passport-local').Strategy //use the local strategy for passport
 var server_errors = []; // array for server-error
+
 router.get('/signup', function(req, res, next) {  //when there is a get request for signup page , render 'signup' view and send title variable with the value of "Sign up"
   res.render('signup', { title: 'Sign up' });
 });
@@ -17,20 +18,18 @@ router.get('/login', function(req, res, next) { //When there is a get request fo
   res.render('login', { title: 'Login' });
 });
 
-
 router.get('/logout', function(req,res){
   req.logout();                                       //Passport: terminate a login session
   req.flash('success', 'You are now logged out');      //connect-flash
   res.redirect('/users/login');
 });
 
-
-
 router.post('/login', // when there is a post request in login route authenticate locally
   passport.authenticate('local', { failureRedirect: '/users/login', failureFlash: ' Invalid Username or Password'}), // if fails redict and show message
  function(req, res) {
     req.flash('success', 'You are now logged in'); //else  success message and redirect to homepage
     res.redirect('/');
+    //res.redirect('/', {user: req.user.username});
   });
 
 router.post('/signup',upload.single('avatar'), function(req, res, next) { //When there is a post request to signup page, upload a single file from a form field called avatar, then do the callback function
@@ -108,7 +107,7 @@ passport.use(new LocalStrategy(function(username, password, done){
       if(isMatch){
         return done(null, user);
       }else {
-        return done(null, false, {message:'Invalid Passowrd'});
+        return done(null, false, {message:'Invalid Password'});
       }
     });
   });
@@ -129,67 +128,59 @@ router.post('/forgot', function(req,res){
 
     if(errors){ // if there is an error, render forgot page, and send these variables errors, server_errors, and title along with their values
            res.render('forgot', {errors: errors, server_errors:server_errors, title:'Forgotten Email Error'})
-    }else{
+    }
+    else{
           User.checkEmail(email, function(error,dbemail){
-      if(error) return error;
-      
-      if(dbemail){
-              console.log("email exists")
-              User.forgotPasswordUpdate(email, function(err, updated){
-                if(error) return error;
-                console.log("The forgotpassword field has updated to true.");
-              });
+            if(error) return error;
+            if(dbemail){
+                    console.log("email exists")
+                    User.forgotPasswordUpdate(email, function(err, updated){
+                      if(error) return error;
+                      console.log("The forgotpassword field has updated to true.");
+                    });
 
-              // lets create password change link
-              User.passwordLinkId(email, function(err, id){
-              if(err) throw error;
-               var link = 'http://localhost:3000/users/reset/' + id._id;
-              console.log(link);
-              // Time to send the user an email with the change password link
-              // create transport
-                           var transporter = nodemailer.createTransport({
-                            service: 'gmail',
-                            auth:{
-                                user: 'touro.msin.636@gmail.com',
-                                pass: 'tourocollege'
-                            }
-                        });
-                        var mailOptions = {
-                            from: "",
-                            to: email,
-                            subject: "Change Password Request",
-                            html:
-                               `<html><head></head> <body>
-                               <p>Please use this link <a href='${link}'>${link}</a> to recover your password.<br/><br/>
-                               Thank you,<br/><br/>Site Webmaster
-                            </p>
-                            </body>
-                            </html>
-                            `  };
-                        transporter.sendMail(mailOptions, (err, info) => {
-                            if(err) console.log("Error sending mail");
-                            console.log('mail sent' + info.response);
-                        });
-                                             
-                          //Render the same page back to user with a success message
-                          res.render('forgot', { success: `password recovery email has been sent to ${email}, you can check your email now. `,title: 'Password Recovery Mail Sent' });
-
-              });
-          
-                  
-            }else{
+                    // lets create password change link
+                    User.passwordLinkId(email, function(err, id){
+                    if(err) throw error;
+                    var link = 'http://localhost:3000/users/reset/' + id._id;
+                    console.log(link);
+                    // Time to send the user an email with the change password link
+                    // create transport
+                                var transporter = nodemailer.createTransport({
+                              service: 'gmail',
+                              auth:{
+                                  user: 'touro.msin.636@gmail.com',
+                                  pass: 'tourocollege'
+                              }
+                          });
+                          var mailOptions = {
+                              from: "",
+                              to: email,
+                              subject: "Change Password Request",
+                              html:
+                                `<html><head></head> <body>
+                                <p>Please use this link <a href='${link}'>${link}</a> to recover your password.<br/><br/>
+                                Thank you,<br/><br/>Site Webmaster
+                              </p>
+                              </body>
+                              </html>
+                              `  };
+                          transporter.sendMail(mailOptions, (err, info) => {
+                              if(err) console.log("Error sending mail");
+                              console.log('mail sent' + info.response);
+                          });
+                                              
+                            //Render the same page back to user with a success message
+                            res.render('forgot', { success: `password recovery email has been sent to ${email}, you can check your email now. `,title: 'Password Recovery Mail Sent' });
+                });                  
+              }
+              else{
                         console.log("No such email");
                         errors=[{msg: 'No such email registerd in our site.'}];
                          res.render('forgot', {errors: errors, server_errors:server_errors,  title:'No Such Email'});
-           
                     }
-
-
-         });
-   
-          }
-
-  
+                  });  
+            }  
         });
 
 // STEP 6 OF THE INSTRUCTION
@@ -212,11 +203,6 @@ router.get('/reset/:id', function(req,res){
       console.log("Id is fake")
     }
   });//User.checkId
-
- 
-
-
-
 });//router.get
 
 router.post('/reset/:id', function(req,res){
@@ -238,10 +224,6 @@ router.post('/reset/:id', function(req,res){
                         if(errors){
                         res.render('reset', {errors: errors, server_errors:server_errors,  title:'Reset Password Error'});
                         }else{
-                          console.log(newpassword1);
-                          //Finally, Finally
-                          console.log(doc.password)
-                          console.log(doc.forgotpassword)
                           User.hashPassword(newpassword1,function(error,hash){
                                console.log(hash);
                                User.updatePassword(id,hash,function(err,data){
@@ -259,11 +241,6 @@ router.post('/reset/:id', function(req,res){
       console.log("Id is fake")
     }
   });//User.checkId
-
- 
-
-
-
 });//router.post
 
 module.exports = router;

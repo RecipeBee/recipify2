@@ -22,79 +22,76 @@ router.get('/add',auth, function(req, res, next) {     //adds a posts to site /p
       res.render('addpost', { title: 'Add Recipe', categories: categories});
   })
 });
+
 //Edit post get method
 router.get('/edit/:id',auth, function(req, res, next) {  // edit post /posts/edit/:id
-                     //fetches categories
-  var posts = db.get('posts');
-  var categories = db.get('categories');
-  posts.findOne({_id: req.params.id},function(err,post){
-    if(err)throw error;
-    categories.find({},{}, function(err,cats){
-      if(err)throw error;
-      res.render('editpost', { title: 'Edit Recipe', categories: cats, post:post});
-      console.log("HERE ARE CATEGORIES: " + cats[0].title);
-      console.log("HERE IS THE POST: " + post._id + " " + post.title + " " + post.body  + " " + post.category  +" " + post.author  +" " +post.date )
-  });// find categories
-  }); //find posts
-
+                                                         //fetches categories
+        var posts = db.get('posts');
+        var categories = db.get('categories');
+        posts.findOne({_id: req.params.id},function(err,post){
+              if(err)throw error;
+              categories.find({},{}, function(err,cats){
+                  if(err)throw error;
+                  res.render('editpost', { title: 'Edit Recipe', categories: cats, post:post});
+                  console.log("HERE ARE CATEGORIES: " + cats[0].title);
+                  console.log("HERE IS THE POST: " + post._id + " " + post.title + " " + post.body  + " " + post.category  +" " + post.author  +" " +post.date )
+              });// find categories
+        }); //find posts
 }); //router.get for posts/edit/:id
 
 router.post('/edit/:id',upload.single('mainimage'), function(req,res,next){ // post metho for /posts/edit
-  //get form values
-  var postid = req.params.id
-  console.log("Look here!!!");
-  console.log(postid);
-  var title = req.body.title;
-  var body = req.body.body;
-  var category = req.body.category;
-  var author = req.body.author;
-  var date = new Date();
-  var currentImage = req.body.currentImage;
-  console.log(currentImage);
+        //get form values
+        var postid = req.params.id
+        console.log("Look here!!!");
+        console.log(postid);
+        var title = req.body.title;
+        var body = req.body.body;
+        var category = req.body.category;
+        var author = req.body.author;
+        var date = new Date();
+        var currentImage = req.body.currentImage;
+        console.log(currentImage);
 
-  if(req.file){
-
-    var mainImageOriginalName = req.file.originalname;
-    var mainImageName = req.file.filename;
-    var mainImageMime = req.file.mimetype;
-    var mainImagePath = req.file.path;
-    var mainImageExt = req.file.extension;
-    var mainImageSize = req.file.size;
-  }else{
-    var mainImageName = currentImage;
-  }
-
- req.checkBody('title', 'Title field is requires').notEmpty();
- req.checkBody('body', 'body field is requires').notEmpty();
- var errors = req.validationErrors();
- if(errors){
-    var categories = db.get('categories');
-    categories.find({},{}, function(err,categories){
-       res.render('addpost', {errors:errors, title:title, categories:categories})
-   })
-
- }else{
-    var posts=db.get('posts');
-    posts.findOneAndUpdate({_id:postid},{
-      "title":title,
-      "body":body,
-      "category":category,
-      "date":date,
-      "author":author,
-      "mainimage":mainImageName
-    }, function(err,post){
-      if(err) {
-        res.send('Error!!');
-      }
-      else{
-        req.flash('success', 'Post Edited');
-        res.location('/');
-        res.redirect('/');
-      }
-    });
- }
-})
-
+        if(req.file){
+          var mainImageOriginalName = req.file.originalname;
+          var mainImageName = req.file.filename;
+          var mainImageMime = req.file.mimetype;
+          var mainImagePath = req.file.path;
+          var mainImageExt = req.file.extension;
+          var mainImageSize = req.file.size;
+        }else{
+          var mainImageName = currentImage;
+        }
+        req.checkBody('title', 'Title field is requires').notEmpty();
+        req.checkBody('body', 'body field is requires').notEmpty();
+        var errors = req.validationErrors();
+        if(errors){
+            var categories = db.get('categories');
+            categories.find({},{}, function(err,categories){
+              res.render('addpost', {errors:errors, title:title, categories:categories});
+            });
+        }
+        else{
+            var posts=db.get('posts');
+            posts.findOneAndUpdate({_id:postid},{
+                "title":title,
+                "body":body,
+                "category":category,
+                "date":date,
+                "author":author,
+                "mainimage":mainImageName
+            }, function(err,post){
+                if(err) {
+                  res.send('Error!!');
+                }
+                else{
+                  req.flash('success', 'Post Edited');
+                  res.location('/');
+                  res.redirect('/');
+                }
+            });
+        }
+});
 
 router.get('/delete/:id',auth, function(req, res, next) {
     var posts=db.get('posts');
@@ -113,7 +110,6 @@ router.post('/add',upload.single('mainimage'), function(req,res,next){
   var date = new Date();
 
   if(req.file){
-
     var mainImageOriginalName = req.file.originalname;
     var mainImageName = req.file.filename;
     var mainImageMime = req.file.mimetype;
@@ -185,7 +181,6 @@ router.post('/addcomment', function(req,res,next){
                   req.flash('success', 'Comment Added');
                   res.location('/posts/show/'+postid);
                   res.redirect('/posts/show/'+postid);
-
                 }
         });
       }
